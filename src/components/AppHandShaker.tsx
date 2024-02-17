@@ -5,14 +5,9 @@ import { useState } from 'react';
 
 const connectToServer = async (host: string, callback: any) => {
   console.log('Fetch test on : ', host);
-  return fetch(host, {
-    method: 'GET', headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(response => response.text())
+  return fetch(host, { method: 'GET' }).then(response => response.text())
     .then((data) => {
-      console.log('Test : ', data);
-      callback(true);
+      callback(true, host);
     })
     .catch((ex) => {
       console.log('Error: ', ex);

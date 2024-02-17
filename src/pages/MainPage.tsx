@@ -1,13 +1,25 @@
 /* eslint-disable prettier/prettier */
 import AppHandShaker from '../components/AppHandShaker';
-import {StyleSheet} from 'react-native';
-import {Heading, VStack, View} from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Heading, VStack, View } from 'native-base';
 import { useState } from 'react';
+import AppPrimaryControls from '../components/AppPrimaryControls';
+
+interface NetState {
+  connetcted: boolean;
+  ipAddress: string;
+}
 
 const MainPage: React.FC<any> = () => {
-  const [connected, setConnected] = useState(false);
-  const onConnected = (connected: boolean) => {
-    setConnected(connected);
+  const [netState, setNetState] = useState({
+    connected: false,
+    ipAddress: ''
+  });
+  const onConnected = (connected: boolean, ipAddress: string) => {
+    setNetState({
+      connected,
+      ipAddress
+    });
   }
 
   return (
@@ -16,23 +28,10 @@ const MainPage: React.FC<any> = () => {
         <Heading size="2xl">Bahbi Water</Heading>
       </VStack>
       <AppHandShaker callback={onConnected}></AppHandShaker>
-      <Heading>
-        {connected ? 'connected' : 'not-connected'}
-      </Heading>
-      {/* <Section title="Step One">
-          Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-          screen and then come back to see your edits.
-        </Section>
-        <Section title="See Your Changes">
-          <ReloadInstructions />
-        </Section>
-        <Section title="Debug">
-          <DebugInstructions />
-        </Section>
-        <Section title="Learn More">
-          Read the docs to discover what to do next:
-        </Section>
-        <LearnMoreLinks /> */}
+      <AppPrimaryControls
+        ipAddress={netState.ipAddress}
+        connected={netState.connected}>
+      </AppPrimaryControls>
     </View>
   );
 };
