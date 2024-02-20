@@ -7,15 +7,14 @@
  */
 
 import {
-  SafeAreaView,
+  ImageBackground,
   ScrollView,
   StatusBar,
+  StyleSheet,
   useColorScheme,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NativeBaseProvider} from 'native-base';
 import MainPage from './pages/MainPage';
 
@@ -28,19 +27,41 @@ function App(): React.JSX.Element {
 
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-         <MainPage></MainPage>
-        </ScrollView>
-      </SafeAreaView>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <ImageBackground
+          resizeMode="cover"
+          style={styles.image}
+          source={require('../assets/background.png')}>
+          <MainPage></MainPage>
+        </ImageBackground>
+      </ScrollView>
     </NativeBaseProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    fontSize: 42,
+    lineHeight: 84,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#000000c0',
+  },
+});
 
 export default App;

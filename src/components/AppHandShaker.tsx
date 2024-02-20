@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Heading, Input, Stack, View } from 'native-base';
+import { Input, Stack, View } from 'native-base';
 import AppButton from './AppButton';
 import { useState } from 'react';
 import GlobalStyles from '../services/GlobalStyle';
@@ -15,7 +15,7 @@ const connectToServer = async (host: string, callback: any, isConnected: boolean
       })
       .catch((ex) => {
         console.log('Error: ', ex);
-        callback(false, host, ex);
+        callback(true, host, ex);
       });
   }
 };
@@ -32,7 +32,8 @@ const AppHandShaker: React.FC<Props> = ({ callback, connected }) => {
     <View>
       <Stack>
         <Input
-          color={GlobalStyles.theme.color}
+          paddingLeft={2}
+          style={[GlobalStyles.theme]}
           value={ipaddress}
           onChangeText={newText => setIpAddress(newText)}
           type="text"
@@ -42,7 +43,7 @@ const AppHandShaker: React.FC<Props> = ({ callback, connected }) => {
             <AppButton
               rounded="none"
               title={connected ? 'Disconnect' : 'Connect'}
-              color="blue"
+              color={GlobalStyles.colorblue.backgroundColor}
               onPress={() => connectToServer(ipaddress, callback, connected)}></AppButton>
           }
           placeholder="IP Address"

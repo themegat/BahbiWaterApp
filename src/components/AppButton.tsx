@@ -8,6 +8,7 @@
 
 import {Button} from 'native-base';
 import React from 'react';
+import GlobalStyles from '../services/GlobalStyle';
 
 interface Props {
   title: string;
@@ -21,11 +22,17 @@ const AppButton: React.FC<Props> = ({
   title,
   onPress,
   size = 'md',
-  color = 'blue',
+  color = GlobalStyles.colorblue.backgroundColor,
   rounded = 'md',
 }) => {
   return (
-    <Button onPress={onPress} size={size} colorScheme={color} rounded={rounded}>
+    <Button 
+    fontWeight={GlobalStyles.theme.fontWeight}
+    fontSize={GlobalStyles.theme.fontSize}
+    onPress={onPress} 
+    size={size} 
+    bg={color} 
+    rounded={rounded}>
       {title}
     </Button>
   );
