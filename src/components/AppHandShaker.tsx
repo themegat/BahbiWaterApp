@@ -1,31 +1,38 @@
 /* eslint-disable prettier/prettier */
-import { Input, Stack, View } from 'native-base';
+import { Heading, Input, Stack, View } from 'native-base';
 import AppButton from './AppButton';
 import { useState } from 'react';
+import GlobalStyles from '../services/GlobalStyle';
 
-const connectToServer = async (host: string, callback: any) => {
+const connectToServer = async (host: string, callback: any, isConnected: boolean) => {
   console.log('Fetch test on : ', host);
-  return fetch(host, { method: 'GET' }).then(response => response.text())
-    .then((data) => {
-      callback(true, host);
-    })
-    .catch((ex) => {
-      console.log('Error: ', ex);
-      callback(false);
-    });
+  if (isConnected) {
+    callback(false, host, 'Disconnected');
+  } else {
+    fetch(host, { method: 'GET' }).then(response => response.text())
+      .then((data) => {
+        callback(true, host, data);
+      })
+      .catch((ex) => {
+        console.log('Error: ', ex);
+        callback(false, host, ex);
+      });
+  }
 };
 
 interface Props {
   callback: any;
+  connected: boolean;
 }
 
-const AppHandShaker: React.FC<Props> = ({callback}) => {
+const AppHandShaker: React.FC<Props> = ({ callback, connected }) => {
   const [ipaddress, setIpAddress] = useState('http://192.168.8');
 
   return (
     <View>
       <Stack>
         <Input
+          color={GlobalStyles.theme.color}
           value={ipaddress}
           onChangeText={newText => setIpAddress(newText)}
           type="text"
@@ -34,9 +41,9 @@ const AppHandShaker: React.FC<Props> = ({callback}) => {
           InputRightElement={
             <AppButton
               rounded="none"
-              title="Connect"
+              title={connected ? 'Disconnect' : 'Connect'}
               color="blue"
-              onPress={() => connectToServer(ipaddress, callback)}></AppButton>
+              onPress={() => connectToServer(ipaddress, callback, connected)}></AppButton>
           }
           placeholder="IP Address"
         />
