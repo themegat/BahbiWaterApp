@@ -1,19 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { Input, Stack, View } from 'native-base';
+import {Input, Stack, View} from 'native-base';
 import AppButton from './AppButton';
-import { useState } from 'react';
+import {useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
+import TranslationService from '../services/TranslationService';
 
-const connectToServer = async (host: string, callback: any, isConnected: boolean) => {
+const connectToServer = async (
+  host: string,
+  callback: any,
+  isConnected: boolean,
+) => {
   console.log('Fetch test on : ', host);
   if (isConnected) {
     callback(false, host, 'Disconnected');
   } else {
-    fetch(host, { method: 'GET' }).then(response => response.text())
-      .then((data) => {
+    fetch(host, {method: 'GET'})
+      .then(response => response.text())
+      .then(data => {
         callback(true, host, data);
       })
-      .catch((ex) => {
+      .catch(ex => {
         console.log('Error: ', ex);
         callback(true, host, ex);
       });
@@ -25,7 +31,7 @@ interface Props {
   connected: boolean;
 }
 
-const AppHandShaker: React.FC<Props> = ({ callback, connected }) => {
+const AppHandShaker: React.FC<Props> = ({callback, connected}) => {
   const [ipaddress, setIpAddress] = useState('http://192.168.8');
 
   return (
@@ -42,11 +48,17 @@ const AppHandShaker: React.FC<Props> = ({ callback, connected }) => {
           InputRightElement={
             <AppButton
               rounded="none"
-              title={connected ? 'Disconnect' : 'Connect'}
+              title={
+                connected
+                  ? TranslationService.get('title_disconnect')
+                  : TranslationService.get('title_connect')
+              }
               color={GlobalStyles.colorblue.backgroundColor}
-              onPress={() => connectToServer(ipaddress, callback, connected)}></AppButton>
+              onPress={() =>
+                connectToServer(ipaddress, callback, connected)
+              }></AppButton>
           }
-          placeholder="IP Address"
+          placeholder={TranslationService.get('ip_address')}
         />
       </Stack>
     </View>

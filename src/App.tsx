@@ -38,7 +38,7 @@ function App(): React.JSX.Element {
         <ImageBackground
           resizeMode="cover"
           style={styles.image}
-          source={require('../assets/background.png')}>
+          source={require('../assets/images/background.png')}>
           <MainPage></MainPage>
         </ImageBackground>
       </ScrollView>
