@@ -53,7 +53,11 @@ const AppHandShaker: React.FC<Props> = ({callback, connected}) => {
                   ? TranslationService.get('title_disconnect')
                   : TranslationService.get('title_connect')
               }
-              color={GlobalStyles.colorblue.backgroundColor}
+              color={
+                connected
+                  ? GlobalStyles.colordblue.backgroundColor
+                  : GlobalStyles.colorlblue.backgroundColor
+              }
               onPress={() =>
                 connectToServer(ipaddress, callback, connected)
               }></AppButton>

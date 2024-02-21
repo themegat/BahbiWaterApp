@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import AppHandShaker from '../components/AppHandShaker';
 import {StyleSheet} from 'react-native';
-import {Heading, VStack, View, Image} from 'native-base';
+import {Heading, VStack, View} from 'native-base';
 import {useState} from 'react';
 import AppPrimaryControls from '../components/AppPrimaryControls';
 import GlobalStyles from '../services/GlobalStyle';
@@ -34,9 +34,6 @@ const MainPage: React.FC<any> = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require('../../assets/images/icon.png')}></Image>
       <VStack alignItems="center" space={1}>
         <Heading
           color={GlobalStyles.theme.color}
@@ -68,18 +65,11 @@ const MainPage: React.FC<any> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 6,
+    padding: 8,
   },
   heading: {
     paddingTop: 5,
-    paddingBottom: 5,
-  },
-  logo: {
-    width: '40%',
-    height: '20%',
-    objectFit: 'fill',
-    alignSelf: 'center',
-    borderRadius: 100,
+    paddingBottom: 20,
   },
 });
 

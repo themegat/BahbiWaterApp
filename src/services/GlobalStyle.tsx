@@ -14,9 +14,13 @@ const GlobalStyles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
   },
-  colorblue: {
-    backgroundColor: '#2266f0',
-    color: '#2266f0',
+  colordblue: {
+    backgroundColor: '#236295',
+    color: '#236295',
+  },
+  colorlblue: {
+    backgroundColor: '#0da8d9',
+    color: '#0da8d9',
   },
   colorred: {
     backgroundColor: '#d62f11',
@@ -25,6 +29,10 @@ const GlobalStyles = StyleSheet.create({
   colorgreen: {
     backgroundColor: '#0dbf16',
     color: '#0dbf16',
+  },
+  coloryellow: {
+    backgroundColor: '#ffd48f',
+    color: '#ffd48f',
   },
 });
 

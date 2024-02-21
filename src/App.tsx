@@ -38,7 +38,7 @@ function App(): React.JSX.Element {
         <ImageBackground
           resizeMode="cover"
           style={styles.image}
-          source={require('../assets/images/background.png')}>
+          source={require('../assets/images/bw_background.png')}>
           <MainPage></MainPage>
         </ImageBackground>
       </ScrollView>
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 30
   },
   text: {
     color: 'white',

@@ -71,7 +71,7 @@ const AppPrimaryControls: React.FC<Props> = ({
             value={motorSpeed}
             onChangeText={newText => setMotorSpeed(newText)}
             w={{
-              base: '70%',
+              base: '73%',
               md: '100%',
             }}
             placeholder={TranslationService.get('placeholder_motorspeed')}
@@ -93,7 +93,7 @@ const AppPrimaryControls: React.FC<Props> = ({
             isDisabled={connected ? false : true}
             onPress={() => runPump(ipAddress, motorSpeed, logCallback)}
             width={'50%'}
-            bg={GlobalStyles.colorgreen.backgroundColor}>
+            bg={GlobalStyles.coloryellow.backgroundColor}>
             {TranslationService.get('start')}
           </Button>
           <Button
