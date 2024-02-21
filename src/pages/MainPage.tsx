@@ -7,6 +7,7 @@ import AppPrimaryControls from '../components/AppPrimaryControls';
 import GlobalStyles from '../services/GlobalStyle';
 import AppOutput from '../components/AppOutput';
 import AppDivider from '../components/AppDivider';
+import TranslationService from '../services/TranslationService';
 
 const MainPage: React.FC<any> = () => {
   const [netState, setNetState] = useState({
@@ -35,25 +36,31 @@ const MainPage: React.FC<any> = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={require('../../assets/icon.png')}></Image>
+        source={require('../../assets/images/icon.png')}></Image>
       <VStack alignItems="center" space={1}>
         <Heading
           color={GlobalStyles.theme.color}
           size="2xl"
           style={styles.heading}>
-          Bahbi Water
+          {TranslationService.get('app_title')}
         </Heading>
       </VStack>
-      <AppDivider title="Connect" width="77%"></AppDivider>
+      <AppDivider
+        title={TranslationService.get('title_connect')}
+        width="77%"></AppDivider>
       <AppHandShaker
         callback={onConnected}
         connected={netState.connected}></AppHandShaker>
-      <AppDivider title="Controls" width="77%"></AppDivider>
+      <AppDivider
+        title={TranslationService.get('title_controls')}
+        width="77%"></AppDivider>
       <AppPrimaryControls
         ipAddress={netState.ipAddress}
         connected={netState.connected}
         logCallback={appendLog}></AppPrimaryControls>
-      <AppDivider title="Output" width="82%"></AppDivider>
+      <AppDivider
+        title={TranslationService.get('title_output')}
+        width="82%"></AppDivider>
       <AppOutput text={netState.log}></AppOutput>
     </View>
   );

@@ -11,6 +11,7 @@ import {
 import {StyleSheet} from 'react-native';
 import {useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
+import TranslationService from '../services/TranslationService';
 
 const runPump = async (host: string, speed: string, logCallback: any) => {
   return fetch(`${host}/run/${speed}`, {method: 'POST'})
@@ -60,7 +61,7 @@ const AppPrimaryControls: React.FC<Props> = ({
               <Text
                 fontSize={GlobalStyles.theme.fontSize}
                 fontWeight={GlobalStyles.theme.fontWeight}>
-                Motor Speed:
+                {TranslationService.get('motor_speed')}:
               </Text>
             }
           />
@@ -73,7 +74,7 @@ const AppPrimaryControls: React.FC<Props> = ({
               base: '70%',
               md: '100%',
             }}
-            placeholder="nativebase"
+            placeholder={TranslationService.get('placeholder_motorspeed')}
           />
         </InputGroup>
       </Stack>
@@ -93,14 +94,14 @@ const AppPrimaryControls: React.FC<Props> = ({
             onPress={() => runPump(ipAddress, motorSpeed, logCallback)}
             width={'50%'}
             bg={GlobalStyles.colorgreen.backgroundColor}>
-            Start
+            {TranslationService.get('start')}
           </Button>
           <Button
             isDisabled={connected ? false : true}
             onPress={() => stopPump(ipAddress, logCallback)}
             width={'50%'}
             bg={GlobalStyles.colorred.backgroundColor}>
-            Stop
+            {TranslationService.get('stop')}
           </Button>
         </Button.Group>
       </Stack>

@@ -1,0 +1,15 @@
+{
+    "en": {
+        "app_title": "Bahbi Water",
+        "title_connect": "Connect",
+        "title_disconnect": "Disconnect",
+        "title_controls": "Controls",
+        "title_output": "Output",
+        "ip_address": "IP Address",
+        "motor_speed": "Motor Speed",
+        "start": "Start",
+        "stop": "Stop",
+        "placeholder_output": "Logs will be displayed here",
+        "placeholder_motorspeed": "Enter a value from 1 - 3"
+    }
+}
