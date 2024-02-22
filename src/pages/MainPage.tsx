@@ -2,34 +2,17 @@
 import AppHandShaker from '../components/AppHandShaker';
 import {StyleSheet} from 'react-native';
 import {Heading, VStack, View} from 'native-base';
-import {useState} from 'react';
 import AppPrimaryControls from '../components/AppPrimaryControls';
 import GlobalStyles from '../services/GlobalStyle';
 import AppOutput from '../components/AppOutput';
 import AppDivider from '../components/AppDivider';
 import TranslationService from '../services/TranslationService';
+import {useSelector} from 'react-redux';
 
 const MainPage: React.FC<any> = () => {
-  const [netState, setNetState] = useState({
-    connected: false,
-    ipAddress: '',
-    log: '',
-  });
-
-  const onConnected = (connected: boolean, ipAddress: string, text: string) => {
-    setNetState({
-      connected,
-      ipAddress,
-      log: `${netState.log}\n- ${text}`,
-    });
-  };
-
-  const appendLog = (text: string) => {
-    setNetState({
-      connected: netState.connected,
-      ipAddress: netState.ipAddress,
-      log: `${netState.log}\n- ${text}`,
-    });
+  const logs: string[] = useSelector((state: any) => state.logger);
+  const readLogs = () => {
+    return logs.join('\n');
   };
 
   return (
@@ -45,20 +28,15 @@ const MainPage: React.FC<any> = () => {
       <AppDivider
         title={TranslationService.get('title_connect')}
         width="77%"></AppDivider>
-      <AppHandShaker
-        callback={onConnected}
-        connected={netState.connected}></AppHandShaker>
+      <AppHandShaker></AppHandShaker>
       <AppDivider
         title={TranslationService.get('title_controls')}
         width="77%"></AppDivider>
-      <AppPrimaryControls
-        ipAddress={netState.ipAddress}
-        connected={netState.connected}
-        logCallback={appendLog}></AppPrimaryControls>
+      <AppPrimaryControls></AppPrimaryControls>
       <AppDivider
         title={TranslationService.get('title_output')}
         width="82%"></AppDivider>
-      <AppOutput text={netState.log}></AppOutput>
+      <AppOutput text={readLogs()}></AppOutput>
     </View>
   );
 };
