@@ -20,12 +20,17 @@ import MainPage from './pages/MainPage';
 import {configureStore} from '@reduxjs/toolkit';
 import allReducers from './services/state/reducers/reducers';
 import {Provider} from 'react-redux';
+import { useEffect } from 'react';
+import SplashScreen from 'react-native-splash-screen';
 
 const store = configureStore({reducer: allReducers});
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+  
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
