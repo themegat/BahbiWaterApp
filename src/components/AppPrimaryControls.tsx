@@ -12,41 +12,36 @@ import {StyleSheet} from 'react-native';
 import {useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
 import TranslationService from '../services/TranslationService';
+import {useDispatch, useSelector} from 'react-redux';
+import NetworkState from '../models/state/network-state';
+import {onLog} from '../services/state/actions/logger';
 
-const runPump = async (host: string, speed: string, logCallback: any) => {
-  return fetch(`${host}/run/${speed}`, {method: 'POST'})
-    .then(response => response.text())
-    .then(data => {
-      logCallback(data);
-    })
-    .catch(ex => {
-      logCallback(ex);
-    });
-};
-
-const stopPump = async (host: string, logCallback: any) => {
-  return fetch(`${host}/stop`, {method: 'POST'})
-    .then(response => response.text())
-    .then(data => {
-      logCallback(data);
-    })
-    .catch(ex => {
-      logCallback(ex);
-    });
-};
-
-interface Props {
-  ipAddress: string;
-  connected: boolean;
-  logCallback: any;
-}
-
-const AppPrimaryControls: React.FC<Props> = ({
-  ipAddress,
-  connected,
-  logCallback,
-}) => {
+const AppPrimaryControls: React.FC<any> = () => {
   const [motorSpeed, setMotorSpeed] = useState('2');
+  const networkState: NetworkState = useSelector((state: any) => state.network);
+  const dispatch = useDispatch();
+
+  const runPump = async (host: string, speed: string) => {
+    return fetch(`${host}/run/${speed}`, {method: 'POST'})
+      .then(response => response.text())
+      .then(data => {
+        dispatch(onLog(data.toString()));
+      })
+      .catch(ex => {
+        dispatch(onLog(ex.toString()));
+      });
+  };
+
+  const stopPump = async (host: string) => {
+    return fetch(`${host}/stop`, {method: 'POST'})
+      .then(response => response.text())
+      .then(data => {
+        dispatch(onLog(data.toString()));
+      })
+      .catch(ex => {
+        dispatch(onLog(ex.toString()));
+      });
+  };
 
   return (
     <View>
@@ -67,11 +62,11 @@ const AppPrimaryControls: React.FC<Props> = ({
           />
           <Input
             style={[GlobalStyles.theme, GlobalStyles.border]}
-            isDisabled={connected ? false : true}
+            isDisabled={networkState.connected ? false : true}
             value={motorSpeed}
             onChangeText={newText => setMotorSpeed(newText)}
             w={{
-              base: '70%',
+              base: '73%',
               md: '100%',
             }}
             placeholder={TranslationService.get('placeholder_motorspeed')}
@@ -90,15 +85,15 @@ const AppPrimaryControls: React.FC<Props> = ({
           <Button
             fontWeight={GlobalStyles.theme.fontWeight}
             fontSize={GlobalStyles.theme.fontSize}
-            isDisabled={connected ? false : true}
-            onPress={() => runPump(ipAddress, motorSpeed, logCallback)}
+            isDisabled={networkState.connected ? false : true}
+            onPress={() => runPump(networkState.ipAddress, motorSpeed)}
             width={'50%'}
-            bg={GlobalStyles.colorgreen.backgroundColor}>
+            bg={GlobalStyles.coloryellow.backgroundColor}>
             {TranslationService.get('start')}
           </Button>
           <Button
-            isDisabled={connected ? false : true}
-            onPress={() => stopPump(ipAddress, logCallback)}
+            isDisabled={networkState.connected ? false : true}
+            onPress={() => stopPump(networkState.ipAddress)}
             width={'50%'}
             bg={GlobalStyles.colorred.backgroundColor}>
             {TranslationService.get('stop')}

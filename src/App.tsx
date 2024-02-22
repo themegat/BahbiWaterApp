@@ -17,6 +17,11 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NativeBaseProvider} from 'native-base';
 import MainPage from './pages/MainPage';
+import {configureStore} from '@reduxjs/toolkit';
+import allReducers from './services/state/reducers/reducers';
+import {Provider} from 'react-redux';
+
+const store = configureStore({reducer: allReducers});
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -26,23 +31,25 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <NativeBaseProvider>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1}}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <ImageBackground
-          resizeMode="cover"
-          style={styles.image}
-          source={require('../assets/images/background.png')}>
-          <MainPage></MainPage>
-        </ImageBackground>
-      </ScrollView>
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={backgroundStyle.backgroundColor}
+        />
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          contentInsetAdjustmentBehavior="automatic"
+          style={backgroundStyle}>
+          <ImageBackground
+            resizeMode="cover"
+            style={styles.image}
+            source={require('../assets/images/bw_background.png')}>
+            <MainPage></MainPage>
+          </ImageBackground>
+        </ScrollView>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
 
@@ -52,7 +59,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 30,
   },
   text: {
     color: 'white',

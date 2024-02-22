@@ -4,35 +4,40 @@ import AppButton from './AppButton';
 import {useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
 import TranslationService from '../services/TranslationService';
+import {useDispatch, useSelector} from 'react-redux';
+import {onConnected, onDisconnected} from '../services/state/actions/network';
+import {onLog} from '../services/state/actions/logger';
+import NetworkState from '../models/state/network-state';
 
-const connectToServer = async (
-  host: string,
-  callback: any,
-  isConnected: boolean,
-) => {
-  console.log('Fetch test on : ', host);
-  if (isConnected) {
-    callback(false, host, 'Disconnected');
-  } else {
-    fetch(host, {method: 'GET'})
-      .then(response => response.text())
-      .then(data => {
-        callback(true, host, data);
-      })
-      .catch(ex => {
-        console.log('Error: ', ex);
-        callback(true, host, ex);
-      });
-  }
-};
-
-interface Props {
-  callback: any;
-  connected: boolean;
-}
-
-const AppHandShaker: React.FC<Props> = ({callback, connected}) => {
+const AppHandShaker: React.FC<any> = () => {
   const [ipaddress, setIpAddress] = useState('http://192.168.8');
+  const networkState: NetworkState = useSelector((state: any) => state.network);
+  const dispatch = useDispatch();
+
+  const connectToServer = async (host: string) => {
+    console.log('Fetch test on : ', host);
+    if (networkState.connected) {
+      dispatch(onLog('Disconnected'));
+      dispatch(onDisconnected());
+    } else {
+      fetch(host, {method: 'GET'})
+        .then(response => response.text())
+        .then(data => {
+          dispatch(onLog(data.toString()));
+          dispatch(
+            onConnected({
+              ipAddress: host,
+              connected: true,
+            }),
+          );
+        })
+        .catch(ex => {
+          console.log('Error: ', ex);
+          dispatch(onLog(ex.toString()));
+          dispatch(onDisconnected());
+        });
+    }
+  };
 
   return (
     <View>
@@ -49,14 +54,16 @@ const AppHandShaker: React.FC<Props> = ({callback, connected}) => {
             <AppButton
               rounded="none"
               title={
-                connected
+                networkState.connected
                   ? TranslationService.get('title_disconnect')
                   : TranslationService.get('title_connect')
               }
-              color={GlobalStyles.colorblue.backgroundColor}
-              onPress={() =>
-                connectToServer(ipaddress, callback, connected)
-              }></AppButton>
+              color={
+                networkState.connected
+                  ? GlobalStyles.colordblue.backgroundColor
+                  : GlobalStyles.colorlblue.backgroundColor
+              }
+              onPress={() => connectToServer(ipaddress)}></AppButton>
           }
           placeholder={TranslationService.get('ip_address')}
         />
