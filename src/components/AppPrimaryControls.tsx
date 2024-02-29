@@ -1,13 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {
-  Button,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Stack,
-  Text,
-  View,
-} from 'native-base';
+import {Button, HStack, Stack, Text, View} from 'native-base';
 import {StyleSheet} from 'react-native';
 import {useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
@@ -15,6 +7,18 @@ import TranslationService from '../services/TranslationService';
 import {useDispatch, useSelector} from 'react-redux';
 import NetworkState from '../models/state/network-state';
 import {onLog} from '../services/state/actions/logger';
+
+const speedButtons: {value: number}[] = [
+  {
+    value: 1,
+  },
+  {
+    value: 2,
+  },
+  {
+    value: 3,
+  },
+];
 
 const AppPrimaryControls: React.FC<any> = () => {
   const [motorSpeed, setMotorSpeed] = useState('2');
@@ -45,34 +49,33 @@ const AppPrimaryControls: React.FC<any> = () => {
 
   return (
     <View>
-      <Stack>
-        <InputGroup
-          w={{
-            base: '100%',
-            md: '285',
-          }}>
-          <InputLeftAddon
-            children={
-              <Text
-                fontSize={GlobalStyles.theme.fontSize}
-                fontWeight={GlobalStyles.theme.fontWeight}>
-                {TranslationService.get('motor_speed')}:
-              </Text>
-            }
-          />
-          <Input
-            style={[GlobalStyles.theme, GlobalStyles.border]}
-            isDisabled={networkState.connected ? false : true}
-            value={motorSpeed}
-            onChangeText={newText => setMotorSpeed(newText)}
-            w={{
-              base: '73%',
-              md: '100%',
-            }}
-            placeholder={TranslationService.get('placeholder_motorspeed')}
-          />
-        </InputGroup>
-      </Stack>
+      <HStack style={styles.speedInput}>
+        <Text bold opacity={networkState.connected ? 1 : 0.5}>
+          {TranslationService.get('motor_speed')}
+        </Text>
+        <Button.Group
+          isAttached
+          colorScheme="blue"
+          mx={{
+            base: 'auto',
+            md: 0,
+          }}
+          size="sm">
+          {speedButtons.map(item => (
+            <Button
+              isDisabled={!networkState.connected}
+              onPress={() => {
+                setMotorSpeed(item.value.toString());
+              }}
+              size={'md'}
+              width={85}
+              colorScheme="blue.600"
+              bg={motorSpeed === item.value.toString() ? '#106a91' : '#1bb1f2'}>
+              <Text color="white" bold>{item.value}</Text>
+            </Button>
+          ))}
+        </Button.Group>
+      </HStack>
       <Stack style={styles.container}>
         <Button.Group
           isAttached
@@ -107,6 +110,13 @@ const AppPrimaryControls: React.FC<any> = () => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
+  },
+  speedInput: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    padding: 8,
+    display: 'flex',
+    alignItems: 'baseline',
   },
 });
 

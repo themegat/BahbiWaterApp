@@ -30,6 +30,10 @@ const GlobalStyles = StyleSheet.create({
     backgroundColor: '#0dbf16',
     color: '#0dbf16',
   },
+  colordgreen: {
+    backgroundColor: '#054c09',
+    color: '#054c09',
+  },
   coloryellow: {
     backgroundColor: '#ffd48f',
     color: '#ffd48f',

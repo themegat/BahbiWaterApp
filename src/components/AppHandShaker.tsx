@@ -1,16 +1,20 @@
 /* eslint-disable prettier/prettier */
 import {Input, Stack, View} from 'native-base';
 import AppButton from './AppButton';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import GlobalStyles from '../services/GlobalStyle';
 import TranslationService from '../services/TranslationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {onConnected, onDisconnected} from '../services/state/actions/network';
 import {onLog} from '../services/state/actions/logger';
 import NetworkState from '../models/state/network-state';
+import {ConfigurationContext} from '../services/ConfigContext';
+import {IConfiguration} from '../models/configuration';
 
 const AppHandShaker: React.FC<any> = () => {
-  const [ipaddress, setIpAddress] = useState('http://192.168.8');
+  const config: IConfiguration = useContext(ConfigurationContext);
+
+  const [ipaddress, setIpAddress] = useState(config.baseUrl);
   const networkState: NetworkState = useSelector((state: any) => state.network);
   const dispatch = useDispatch();
 
@@ -60,8 +64,8 @@ const AppHandShaker: React.FC<any> = () => {
               }
               color={
                 networkState.connected
-                  ? GlobalStyles.colordblue.backgroundColor
-                  : GlobalStyles.colorlblue.backgroundColor
+                  ? GlobalStyles.colordgreen.backgroundColor
+                  : GlobalStyles.colorgreen.backgroundColor
               }
               onPress={() => connectToServer(ipaddress)}></AppButton>
           }
